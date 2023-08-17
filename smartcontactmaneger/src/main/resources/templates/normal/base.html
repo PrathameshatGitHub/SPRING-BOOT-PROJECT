@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="Layout(content)">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.rtl.min.css"
+    integrity="sha384-T5m5WERuXcjgzF8DAb7tRkByEZQGcpraRTinjpywg37AO96WoYN9+hrhDVoM6CaT" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <title th:text="${title}">base page</title>
+</head>
+
+<body>
+
+  <nav class=" fixed-top navbar navbar-expand-lg navbar-dark  bg-primary">
+    <div class="container-fluid"> <img class="" style="width: 40px;" src="" th:src="@{/image/contact-book.png}" alt="">
+      <a class="navbar-brand text-center" href="#">Smart Contect Manager</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0  text-uppercase ">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" th:href="@{/}">home</a>
+          </li>
+
+          <!-- <li class="nav-item">
+            <a class="nav-link "><span th:text="${user.name}"></span></a>
+
+          </li> -->
+          <li class="nav-item">
+            <a class="nav-link   " th:href="@{/logout}">logout</a>
+
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  </nav>
+  <!-- end of navbar -->
+  
+
+  <div class="sidebar mt-4">
+<span onclick="togglesidebar()" class="crossbtn">&times;</span>
+    <a href="#" th:href="@{/user/index}" class="item"><i class="fa-solid fa-house-user fa-bounce"></i>  Home</a>
+    <a href="#" th:href=" @{/user/show-contacts/0}"class="item"> <i class="fa-solid fa-address-book fa-flip"></i>View Contact</a>
+    <a href="#" th:href="@{/user/add-contact}" class="item"><i class="fa-sharp fa-solid fa-address-card"></i>Add contact</a>
+    <a href="#" class="item"><i class="fa-solid fa-user fa-beat"></i>Your Profile</a>
+    <a href="#" class="item"><i class="fa-solid fa-gear fa-spin"></i>Setting</a>
+    <a href="#"  th:href="@{/logout}" class="item"><i class="fa-solid fa-right-from-bracket fa-flip"></i>Logout</a>
+    <div class="divider"></div>
+  </div>
+ 
+
+  <!-- end of sidebar -->
+  <div class="content mt-4">
+    <i onclick="togglesidebar()"  class="fas fa-bars m-3"> </i>
+   
+    <div th:if=${session.message} class="container text-center ">
+      <div th:classappend="${'alert-'+session.message.type}"class="alert " role="alert">
+        <span th:text="${session.message.content}"></span>
+      </div>
+
+      <!-- to  remove the message -->
+      
+      <th:block th:text="${@sessionHelper.removeMessageFromSession()}"></th:block>
+      
+    </div>
+    <div th:replace="${content}" th:text="${title}"></div>
+  </div>
+
+  <!-- end of content -->
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+    crossorigin="anonymous"></script>
+    
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script th:src="@{/js/script.js}"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+
+  function deletecontact(cid){
+
+    swal({
+  title: "Are you sure?",
+  text: "Once deleted, you will not be able to recover this imaginary file!",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+   
+      window.location="/user/delete/"+cid
+    
+  } else {
+    swal("Your contact is safe!");
+  }
+});
+  }
+</script>
+
+</body>
+
+</html>
